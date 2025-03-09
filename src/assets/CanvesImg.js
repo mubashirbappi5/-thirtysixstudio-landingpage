@@ -1,4 +1,4 @@
-export const canvasImg = [
+export default  [
   "https://thirtysixstudio.com/peppers/pepperA/0.png",
   "https://thirtysixstudio.com/peppers/pepperA/1.png",
   "https://thirtysixstudio.com/peppers/pepperA/2.png",
