@@ -6,6 +6,7 @@ const Canves = ({ canvesdt }) => {
   const { startIndex, numImages, duration, size, top, left, zIndex } = canvesdt;
   const [index, setIndex] = useState({ value: startIndex });
   const canvasRef = useRef(null);
+  
   useGSAP(() => {
     gsap.to(index, {
       value: startIndex + numImages - 1,
@@ -39,6 +40,8 @@ const Canves = ({ canvesdt }) => {
   return (
     <canvas
       className="absolute"
+      data-scroll
+      data-scroll-speed={Math.random().toFixed(2)}
       style={{
         width: `${size}px`,
         height: `${size}px`,
