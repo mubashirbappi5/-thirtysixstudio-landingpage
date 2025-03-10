@@ -40,8 +40,8 @@ const Canves = ({ canvesdt }) => {
     <canvas
       className="absolute"
       style={{
-        width: `${size * 1.2}px`,
-        height: `${size * 1.2}px`,
+        width: `${size}px`,
+        height: `${size}px`,
         top: `${top}%`,
         left: `${left}%`,
         zIndex: `${zIndex}`,
