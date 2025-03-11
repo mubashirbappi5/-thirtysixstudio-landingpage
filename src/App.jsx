@@ -1,24 +1,33 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Canves from "./Canves";
 import data from "./assets/Data";
 import LocomotiveScroll from "locomotive-scroll";
 
 const App = () => {
+  const [Showcanves, setShowcanves] = useState(false);
+  const headingRef = useRef(null);
   useEffect(() => {
     const scroll = new LocomotiveScroll();
-
+    headingRef.current.addEventListener("click", () => {
+      setShowcanves(!Showcanves);
+    });
    
     return () => {
       if (scroll) scroll.destroy();
     };
-  }, []);
+  }, [Showcanves]);
 
   return (
     <>
       <div className="w-full min-h-screen bg-black relative text-white">
-        {data[0].map((canvesdt, index) => (
-          <Canves key={index} canvesdt={canvesdt} />
-        ))}
+        {Showcanves && (
+          <div className="fixed top-0 left-0 w-full h-screen">
+            {data[0].map((canvesdt, index) => (
+              <Canves key={index} canvesdt={canvesdt} />
+            ))}
+          </div>
+        )}
+       
 
         <div className="w-full h-screen  z-[1]  relative">
           <nav className="w-full h-20 flex items-center justify-between text-white px-10">
@@ -47,7 +56,7 @@ const App = () => {
           </div>
 
           <div className="w-full mt-20 bg-black text-white">
-            <h1 className="text-[13rem] font-normal tracking-tight leading-none">Thirtysixstudio</h1>
+            <h1 ref={headingRef} className="text-[13rem] font-normal tracking-tight leading-none">Thirtysixstudio</h1>
           </div>
           <div className="w-full h-screen bg-red-500">
             <h1>Hello World</h1>
