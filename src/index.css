@@ -5,3 +5,6 @@
 canvas{
     pointer-events: none;
 }
+.growing{
+    background-color: red;
+}
