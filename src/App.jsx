@@ -1,14 +1,15 @@
-import React, { useEffect, useRef, useState } from "react";
+import "./index.css";
 import Canvas from "./Canves";
 import data from "./assets/Data";
+
 import LocomotiveScroll from "locomotive-scroll";
-import { useGSAP } from "@gsap/react";
+import { useEffect, useState, useRef } from "react";
 import gsap from "gsap";
 
-const App = () => {
+function App() {
   const [showCanvas, setShowCanvas] = useState(false);
-  const headingRef = useRef(null);
-  const growingSpanRef = useRef(null);
+  const headingref = useRef(null);
+  const growingSpan = useRef(null);
 
   useEffect(() => {
     const scroll = new LocomotiveScroll();
@@ -17,32 +18,58 @@ const App = () => {
     };
   }, []);
 
-  useGSAP(() => {
+  useEffect(() => {
     const handleClick = (e) => {
-      setShowCanvas(!showCanvas);
-      gsap.set(growingSpanRef.current, {
-        top: e.clientY,
-        left: e.clientX,
-      });
-      gsap.to(growingSpanRef.current, {
-        scale: 1000,
-        duration: 1.2,
-        ease: "power2.inOut",
+      setShowCanvas((prevShowCanvas) => {
+        if (!prevShowCanvas) {
+          gsap.set(growingSpan.current, {
+            top: e.clientY,
+            left: e.clientX,
+          });
+
+          gsap.to("body", {
+            color: "#000",
+            backgroundColor: "#fd2c2a",
+            duration: 1.2,
+            ease: "power2.inOut",
+          });
+
+          gsap.to(growingSpan.current, {
+            scale: 1000,
+            duration: 2,
+            ease: "power2.inOut",
+            onComplete: () => {
+              gsap.set(growingSpan.current, {
+                scale: 0,
+                clearProps: "all",
+              });
+            },
+          });
+        } else {
+          gsap.to("body", {
+            color: "#fff",
+            backgroundColor: "#000",
+            duration: 1.2,
+            ease: "power2.inOut",
+          });
+        }
+
+        return !prevShowCanvas;
       });
     };
 
-    const heading = headingRef.current;
-    if (heading) {
-      heading.addEventListener("click", handleClick);
-      return () => heading.removeEventListener("click", handleClick);
+    const headingElement = headingref.current;
+    if (headingElement) {
+      headingElement.addEventListener("click", handleClick);
+      return () => headingElement.removeEventListener("click", handleClick);
     }
-  }, [showCanvas]);
+  }, []);
 
   return (
     <>
       <span
-        ref={growingSpanRef}
-        className="growing rounded-full block fixed top-[-20px] left-[-20px] w-5 h-5"
+        ref={growingSpan}
+        className="growing rounded-full block fixed top-[-20px] left-[-20px] w-5 h-5 bg-white"
       ></span>
       <div className="w-full relative min-h-screen font-['Helvetica_Now_Display']">
         {showCanvas &&
@@ -85,7 +112,7 @@ const App = () => {
           </div>
           <div className="w-full absolute bottom-0 left-0">
             <h1
-              ref={headingRef}
+              ref={headingref}
               className="text-[17rem] font-normal tracking-tight leading-none pl-5"
             >
               Thirtysixstudios
@@ -114,6 +141,6 @@ const App = () => {
       </div>
     </>
   );
-};
+}
 
 export default App;

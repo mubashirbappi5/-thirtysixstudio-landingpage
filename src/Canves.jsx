@@ -1,49 +1,38 @@
-import React, { useEffect, useRef, useState } from "react";
-import canvasImg from "./assets/CanvesImg";
+import { useEffect, useRef, useState } from "react";
+import canvasImages from "./assets/CanvesImg";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 
-const Canves = ({ canvesdt }) => {
-  const { startIndex, numImages, duration, size, top, left, zIndex } = canvesdt;
+function Canvas({ details }) {
+  const { startIndex, numImages, duration, size, top, left, zIndex } = details;
+
   const [index, setIndex] = useState({ value: startIndex });
   const canvasRef = useRef(null);
 
   useGSAP(() => {
-    // Animation for the image sequence
     gsap.to(index, {
       value: startIndex + numImages - 1,
       duration: duration,
       repeat: -1,
-      ease: "none", // Changed to none for smoother animation
+      ease: "linear",
       onUpdate: () => {
         setIndex({ value: Math.round(index.value) });
       },
     });
 
-    // Fade in animation for the canvas
-    gsap.fromTo(
-      canvasRef.current,
-      {
-        opacity: 0,
-        scale: 0.8,
-      },
-      {
-        opacity: 1,
-        scale: 1,
-        duration: 1,
-        ease: "power2.out",
-      }
-    );
-  }, []); // Remove index from dependency array
+    gsap.from(canvasRef.current, {
+      opacity: 0,
+      duration: 1,
+      ease: "power2.inOut",
+    });
+  });
 
   useEffect(() => {
     const scale = window.devicePixelRatio;
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
-
     const img = new Image();
-    img.src = canvasImg[index.value];
-
+    img.src = canvasImages[index.value];
     img.onload = () => {
       canvas.width = canvas.offsetWidth * scale;
       canvas.height = canvas.offsetHeight * scale;
@@ -57,20 +46,20 @@ const Canves = ({ canvesdt }) => {
 
   return (
     <canvas
-      className="absolute"
       data-scroll
-      data-scroll-speed={Math.random().toFixed(2)}
+      data-scroll-speed={Math.random().toFixed(1)}
+      ref={canvasRef}
+      className="absolute"
       style={{
-        width: `${size}px`,
-        height: `${size}px`,
+        width: `${size * 1.8}px`,
+        height: `${size * 1.8}px`,
         top: `${top}%`,
         left: `${left}%`,
         zIndex: `${zIndex}`,
       }}
-      ref={canvasRef}
       id="canvas"
     ></canvas>
   );
-};
+}
 
-export default Canves;
+export default Canvas;
