@@ -1,5 +1,5 @@
 # Thirtysixstudios Website
-
+# LIVE :https://thirtysixstudio-landingpage.vercel.app/
 A modern, interactive website for Thirtysixstudios built with React, GSAP, and Locomotive Scroll.
 
 ## Features
